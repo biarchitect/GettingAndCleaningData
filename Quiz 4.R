@@ -5,6 +5,23 @@ library(downloader)
 url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv"
 file<-"./Data/q4q1.csv"
 download(url,mode="wb",dest=file)
+
+if (file.exists(file)) {
+  download.file(url,file) #may need modifying if binary etc
+  library(tools)       # for md5 checksum
+  sink("download_metadata.txt")
+  print("Download date:")
+  print(Sys.time() )
+  print("Download URL:")
+  print(url)
+  print("Downloaded file Information")
+  print(file.info(file))
+  print("Downloaded file md5 Checksum")
+  print(md5sum(file))
+  sink()
+}
+
+
 x<-read.csv(file,as.is=T, na.strings=c("..",""),skip=4)
 xnames<-names(x)
 strsplit(xnames,"wgtp")
