@@ -1,4 +1,4 @@
-#Step 1.Combine the training and the test sets to create one data set.
+df#Step 1.Combine the training and the test sets to create one data set.
 #TRAIN
 filetrainx<-"./Data//Project//UCI HAR Dataset//train//X_train.txt"
 train<-read.table(filetrainx,as.is=T)
@@ -107,6 +107,16 @@ df5avg<-matrix(rep(NA,68*1),nrow=1)
 for (x in 1:length(subj)){for (y in 1:length(act)){df5avg<- rbind(df5avg,c(x,y,apply(df5[df5$SubjectNbr == x & df5$ActivityNbr == y,3:68],2,mean)))}}
 df5avg<-df5avg[2:181,] #Get rid of NA row
 df5avg<-as.data.frame(df5avg)
+#checkpoint data frame
+dfavg5.1<-df5avg
 
-#Write out df5avg without the headre and it's tidy so upload it.
+names(df5avg)[3:68]<-paste("M",names(df5avg[3:68]),sep="")
+names(df5avg)[1:2]<-c("SubjectNbr","ActivityNbr")
+names(df5avg)<-gsub("\\(","",names(df5avg))
+names(df5avg)<-gsub("\\)","",names(df5avg))
+names(df5avg)<-gsub("-m","M",names(df5avg))
+names(df5avg)<-gsub("-s","S",names(df5avg))
+names(df5avg)<-gsub("-","",names(df5avg))
+
+#Write out df5avg without the headr and it's tidy so upload it.
 
