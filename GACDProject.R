@@ -34,7 +34,12 @@ filetestsubj<-"./Data//Project//UCI HAR Dataset//test//subject_test.txt"
 testsubj<-read.table(filetestsubj,as.is=T)
 
 dfx<-rbind(train,test)
+
+#Check of merge
+dim(train)[1];dim(test)[1];dim(dfx)[1]
 dim(train)[1]+dim(test)[1]==dim(dfx)[1]
+
+
 dfact<-rbind(trainy,testy)
 names(dfact)<-"ActivityNbr"
 dfsubj<-rbind(trainsubj,testsubj)
@@ -53,7 +58,7 @@ dfxlabels<-read.table(filenamelabels,as.is=T)
 filenamefeatures<-"./Data//Project//UCI HAR Dataset//features.txt"
 dfxfeatures<-read.table(filenamefeatures,as.is=T)
 
-#Only use the V2 variable whcih contains the names
+#Only use the V2 variable which contains the names
 dfxf<-dfxfeatures[,2]
 #Replace default names with the actual variable names
 names(dfx)<-dfxf
@@ -81,6 +86,7 @@ names(df2)<-gsub("\\)","",names(df2))
 names(df2)<-gsub("-m","M",names(df2))
 names(df2)<-gsub("-s","S",names(df2))
 names(df2)<-gsub("-","",names(df2))
+
 
 #Add the columns for Activity and Subject
 df2<-cbind(dfsubj,dfact,df2)
