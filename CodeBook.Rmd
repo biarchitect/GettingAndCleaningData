@@ -5,10 +5,13 @@ date: "Tuesday, August 19, 2014"
 output: pdf_document
 ---
 #Introduction
-The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
-For the purposes of demonstrating tidy Data techniques, the training and test datsets have been merged into a single dataset and then subsetted based on the requirements of the Project.
+The data for this dataset was gethered from an experiemnt that is attrivbuted at the end of this document. The following is from their readme;
 
+"The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
+For the purposes of demonstrating tidy Data techniques, the training and test datsets have been merged into a single dataset and then subsetted based on the requirements of the Project.""
 
+This derived dataset is made up of 180 rows of 68 variables. The rows are summaries of the original dataset.
+THe features are means of the experiemtnal data gathere. The data variables defined in the this way;
 ##Variables
 Name            Position    Values    Description
 
@@ -16,93 +19,48 @@ SubjectNbr      1-2         1-30      A number from 1- 30 assigned to each of te
 
 ActivityNbr     3           1-6       A number from 1-6 designating the activity performed;
                                       (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS,SITTING,STANDING, LAYING)
-                                      
-All 66 of the remaining features are means and std deviations subsetted from the larger feature set selected for this database that came from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz. 
 
-Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
+
+All 66 of the remaining features are the means of means and std deviations subsetted from the larger feature set selected for this database that came from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. 
+From that code book;
+"These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz.Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
 
 Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals). 
 
 These signals were used to estimate variables of the feature vector for each pattern:  
-'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.  
+'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions."
+
+For more information about the original dataset contact: activityrecognition@smartlab.ws
+
+The variable names were adjusted in the following ways;
 
 ##Feature Naming Processing for R
+-- All variables except the first two ActivityNbr and SubjectNbr were prefixed with "M" denoting that they are Means.
 -- All parens and dashes were removed
--- Variable names wer made camelcase for readability.
+-- Variable names were made camelcase for readability.
 
+###Abbreviations
+M - Mean
+t - time
+f - fast fourier Transform
+Gravity - Gravity
+Body - Body
+Acc - Acceleration
+Jerk - Jerk (http://en.wikipedia.org/wiki/Jerk_(physics))
+Gyro - Gryoscopic 
+Mean - Mean
+std - Standard Deivation
+Mag - Magnitude
 
-##Notes: 
-
-======
-- Features are normalized and bounded within [-1,1].
-- Each feature vector is a row on the text file.
-
-For more information about this dataset contact: activityrecognition@smartlab.ws
-
-
-```{r echo=FALSE}
-#Step 1.Combine the training and the test sets to create one data set.
-#TRAIN
-filetrainx<-"./Data//Project//UCI HAR Dataset//train//X_train.txt"
-train<-read.table(filetrainx,as.is=T)
-
-filetrainy<-"./Data//Project//UCI HAR Dataset//train//y_train.txt"
-trainy<-read.table(filetrainy,as.is=T)
-
-filetrainsubj<-"./Data//Project//UCI HAR Dataset//train//subject_train.txt"
-trainsubj<-read.table(filetrainsubj,as.is=T)
-
-#TEST
-
-filetest<-"./Data//Project//UCI HAR Dataset//test//X_test.txt"
-test<-read.table(filetest,as.is=T)
-
-filetesty<-"./Data//Project//UCI HAR Dataset//test//y_test.txt"
-testy<-read.table(filetesty,as.is=T)
-
-filetestsubj<-"./Data//Project//UCI HAR Dataset//test//subject_test.txt"
-testsubj<-read.table(filetestsubj,as.is=T)
-
-dfx<-rbind(train,test)
-#dim(train)[1]+dim(test)[1]==dim(dfx)[1]
-dfact<-rbind(trainy,testy)
-names(dfact)<-"ActivityNbr"
-dfsubj<-rbind(trainsubj,testsubj)
-names(dfsubj)<-"SubjectNbr"
-
-#Step 2.Extracts only the measurements on the mean and standard deviation for each measurement. 
-dfxmeanIdx<-grep ("*[Mm]ean\\(\\)*",names(dfx))
-dfxstdIdx<-grep ("*[Ss]td\\(\\)*",names(dfx))
-dfx2<-cbind(dfx[,dfxmeanIdx],dfx[,dfxstdIdx])
-#dfx$"tBodyAccJerk-std()-Z" == dfx1$"tBodyAccJerk-std()-Z"
-
-#Step 3.Uses descriptive activity names to name the activities in the data set
-
-
-#Step 4.Appropriately labels the data set with descriptive variable names. 
-names(df2)<-gsub("\\(","",names(dfx2))
-names(df2)<-gsub("\\)","",names(df2))
-names(df2)<-gsub("-m","M",names(df2))
-names(df2)<-gsub("-s","S",names(df2))
-names(df2)<-gsub("-","",names(df2))
-
-#Add the columns for Activity and Subject
-df2<-cbind(dfsubj,dfact,df2)
-names(df2)
-
-
-#Step 5.Creates a second, independent tidy data set with the average of each variable for each activity and each subject. 
-#
-#sort(unique(df2$ActivityNbr))
-#sort(unique(df2$SubjectNbr))
-```
-
+X  - X direction of movement
+Y  - Y direction of movement
+Z  - Z direction of movement
 
 
 ##License:
 
 ========
-Use of this dataset in publications must be acknowledged by referencing the following publication [1] 
+Use of the actual data dataset versus this derived dataset in publications must be acknowledged by referencing the following publication [1] 
 
 [1] Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. Human Activity Recognition on Smartphones using a Multiclass Hardware-Friendly Support Vector Machine. International Workshop of Ambient Assisted Living (IWAAL 2012). Vitoria-Gasteiz, Spain. Dec 2012
 

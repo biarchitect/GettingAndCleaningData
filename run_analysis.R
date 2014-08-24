@@ -1,16 +1,24 @@
-df#Step 1.Combine the training and the test sets to create one data set.
+
+#Step 1.Combine the training and the test sets to create one data set.
+#The following was done on a Windows Machine.
+#
+maindir<-"C:/Users/trobinson/Documents/Coursera/GettingAndCleaningData"
+setwd(maindir)
+workdir<-"./Data//Project//UCI HAR Dataset//"
+setwd(workdir)
+
 #TRAIN
-filetrainx<-"./Data//Project//UCI HAR Dataset//train//X_train.txt"
+filetrainx<-".//train//X_train.txt"
 train<-read.table(filetrainx,as.is=T)
 
-filetrainsubj<-"./Data//Project//UCI HAR Dataset//train//subject_train.txt"
+filetrainsubj<-".//train//subject_train.txt"
 trainsubj<-read.table(filetrainsubj,as.is=T)
 
 #TEST
-filetest<-"./Data//Project//UCI HAR Dataset//test//X_test.txt"
+filetest<-".//test//X_test.txt"
 test<-read.table(filetest,as.is=T)
 
-filetestsubj<-"./Data//Project//UCI HAR Dataset//test//subject_test.txt"
+filetestsubj<-".//test//subject_test.txt"
 testsubj<-read.table(filetestsubj,as.is=T)
 
 #Merge the two datasets
@@ -24,11 +32,11 @@ dim(train)[1]+dim(test)[1]==dim(dfx)[1]
 #Step 2.Extracts only the measurements on the mean and standard deviation for each measurement. 
 # Step2.1 - Get the feature names so we know which are means and which are standard deviations.
 #Get Activity Labels
-filenamelabels<-"./Data//Project//UCI HAR Dataset//activity_labels.txt"
+filenamelabels<-"./activity_labels.txt"
 dfxlabels<-read.table(filenamelabels,as.is=T)
 
 #Get feature/variable names
-filenamefeatures<-"./Data//Project//UCI HAR Dataset//features.txt"
+filenamefeatures<-"./features.txt"
 dfxfeatures<-read.table(filenamefeatures,as.is=T)
 
 #Only use the V2 variable which contains the names
@@ -54,15 +62,15 @@ df2<-dfx2
 # 
 #Get Activities
 
-filetrainy<-"./Data//Project//UCI HAR Dataset//train//y_train.txt"
+filetrainy<-"./train//y_train.txt"
 trainy<-read.table(filetrainy,as.is=T)
 
-filetesty<-"./Data//Project//UCI HAR Dataset//test//y_test.txt"
+filetesty<-"./test//y_test.txt"
 testy<-read.table(filetesty,as.is=T)
 
 #Get Activity Labels
 
-filenamelabels<-"./Data//Project//UCI HAR Dataset//activity_labels.txt"
+filenamelabels<-"./activity_labels.txt"
 dfxlabels<-read.table(filenamelabels,as.is=T)
 names(dfxlabels)<-c("ActivityNbr","Activity")
 
@@ -87,10 +95,10 @@ names(df2)<-gsub("-","",names(df2))
 df5<-dfx2
 
 
-filetrainsubj<-"./Data//Project//UCI HAR Dataset//train//subject_train.txt"
+filetrainsubj<-"./train//subject_train.txt"
 trainsubj<-read.table(filetrainsubj,as.is=T)
 
-filetestsubj<-"./Data//Project//UCI HAR Dataset//test//subject_test.txt"
+filetestsubj<-"./test//subject_test.txt"
 testsubj<-read.table(filetestsubj,as.is=T)
 
 dfsubj<-rbind(trainsubj,testsubj)
@@ -110,14 +118,25 @@ df5avg<-as.data.frame(df5avg)
 #checkpoint data frame
 dfavg5.1<-df5avg
 
+#Add a M - Mean to evry column name
 names(df5avg)[3:68]<-paste("M",names(df5avg[3:68]),sep="")
+#Add a descriptive name for first two columns
 names(df5avg)[1:2]<-c("SubjectNbr","ActivityNbr")
+#Get rid of cluttering name parens
 names(df5avg)<-gsub("\\(","",names(df5avg))
 names(df5avg)<-gsub("\\)","",names(df5avg))
+#Get rid of "-" and make CamelCase
 names(df5avg)<-gsub("-m","M",names(df5avg))
 names(df5avg)<-gsub("-s","S",names(df5avg))
 names(df5avg)<-gsub("-","",names(df5avg))
 
 #Write out df5avg without the headr and it's tidy so upload it.
 
-write.table(df5avg,"./Data/Step5FinalDataSet.txt",row.names=F,sep=",")
+write.table(df5avg,"./Step5FinalDataSet.txt",row.names=F,sep=",")
+
+#Check result table
+df33<-df5[df5$ActivityNbr==3&df5$SubjectNbr==3,]
+df33avg<-apply(df33,2,mean)
+#If all True then sum should equal number of Columns = 68
+sum(df33avg==df5avg[df5avg$SubjectNbr==3 & df5avg$ActivityNbr==3,])
+
