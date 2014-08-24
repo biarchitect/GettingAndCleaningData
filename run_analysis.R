@@ -120,3 +120,4 @@ names(df5avg)<-gsub("-","",names(df5avg))
 
 #Write out df5avg without the headr and it's tidy so upload it.
 
+write.table(df5avg,"./Data/Step5FinalDataSet.txt",row.names=F,sep=",")
