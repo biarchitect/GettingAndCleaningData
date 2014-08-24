@@ -79,6 +79,9 @@ names(dfact)<-"ActivityNbr"
 
 dfactdesc<-merge(x=dfxlabels,y=dfact,by.x="ActivityNbr",by.y="ActivityNbr")
 
+#Checkpoint the work done thus far. Do it here before binding the Activity.
+df5<-df2
+
 df2<-cbind(dfactdesc$Activity,df2)
 names(df2)[1]<-"Activity"
 
@@ -92,8 +95,6 @@ names(df2)<-gsub("-","",names(df2))
 
 
 #Step 5.Creates a second, independent tidy data set with the average of each variable for each activity and each subject. 
-df5<-dfx2
-
 
 filetrainsubj<-"./train//subject_train.txt"
 trainsubj<-read.table(filetrainsubj,as.is=T)
