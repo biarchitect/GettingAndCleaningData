@@ -5,13 +5,15 @@ date: "Tuesday, August 19, 2014"
 output: pdf_document
 ---
 #Introduction
-The data for this dataset was gethered from an experiemnt that is attrivbuted at the end of this document. The following is from their readme;
+The data for this dataset was gethered from an experiment that is attributed at the end of this document. The following is from their readme;
 
 "The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
-For the purposes of demonstrating tidy Data techniques, the training and test datsets have been merged into a single dataset and then subsetted based on the requirements of the Project.""
+For the purposes of demonstrating tidy Data techniques, the training and test datsets have been merged into a single dataset and then subsetted based on the requirements of the Project."
 
-This derived dataset is made up of 180 rows of 68 variables. The rows are summaries of the original dataset.
-THe features are means of the experiemtnal data gathere. The data variables defined in the this way;
+This derived dataset is made up of 180 rows of 68 variables. The rows are summaries of the original dataset. Units of the variables is seconds.
+Summarizations are the means by Subject and by Activity for each of those Subjects.
+
+The features are means of the experimental data gathered. The data variables are defined in this way;
 ##Variables
 Name            Position    Values    Description
 
@@ -20,9 +22,9 @@ SubjectNbr      1-2         1-30      A number from 1- 30 assigned to each of te
 ActivityNbr     3           1-6       A number from 1-6 designating the activity performed;
                                       (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS,SITTING,STANDING, LAYING)
 
-
 All 66 of the remaining features are the means of means and std deviations subsetted from the larger feature set selected for this database that came from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. 
-From that code book;
+From that code book (attributed at the end of this document);
+
 "These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz.Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
 
 Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals). 
@@ -35,7 +37,7 @@ For more information about the original dataset contact: activityrecognition@sma
 The variable names were adjusted in the following ways;
 
 ##Feature Naming Processing for R
--- All variables except the first two ActivityNbr and SubjectNbr were prefixed with "M" denoting that they are Means.
+-- All variables except the first two ActivityNbr and SubjectNbr were prefixed with "M" denoting that they are Means summarization.
 -- All parens and dashes were removed
 -- Variable names were made camelcase for readability.
 
